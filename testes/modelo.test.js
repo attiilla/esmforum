@@ -23,3 +23,31 @@ test('Testando cadastro de três perguntas', () => {
   expect(perguntas[2].num_respostas).toBe(0);
   expect(perguntas[1].id_pergunta).toBe(perguntas[2].id_pergunta-1);
 });
+
+test('Testando cadastrar resposta',() => {
+  modelo.cadastrar_pergunta('Qual a resposta da vida, universo e tudo mais?');
+  perguntas = modelo.listar_perguntas();
+  expect(perguntas[0].num_respostas).toBe(0)
+  modelo.cadastrar_resposta(perguntas[0].id_pergunta, '42!!!!');
+  perguntas = modelo.listar_perguntas();
+  expect(perguntas[0].num_respostas).toBe(1)
+});
+
+test('Testando get pergunta',() => {
+  modelo.cadastrar_pergunta('Qual a resposta da vida, universo e tudo mais?');
+  modelo.cadastrar_pergunta('Quem roubou a Lindalva?');
+  modelo.cadastrar_pergunta('Qual a prova original do último teorema de Fermat?');
+  const perguntas = modelo.listar_perguntas();
+  let id = perguntas[1].id_pergunta;
+  expect(modelo.get_pergunta(id).texto).toBe('Quem roubou a Lindalva?');
+});
+
+test('Testando get resposta', () => {
+  modelo.cadastrar_pergunta('A hipótese de Rienmann está correta?');
+  modelo.cadastrar_pergunta('Se \'sin(x) = 2\', quanto vale x?')
+  const perguntas = modelo.listar_perguntas();
+  modelo.cadastrar_resposta(perguntas[0].id_pergunta, 'Sim ou não');
+  let id = perguntas[0].id_pergunta;
+  expect(modelo.get_respostas(id)[0].texto).toBe('Sim ou não');
+
+})
